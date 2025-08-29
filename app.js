@@ -1760,7 +1760,7 @@ function renderYellowBonusBadges(){
     const badge = document.createElement('span');
     badge.className = 'y-badge y-badge-col';
     badge.dataset.col = c;
-    badge.textContent = `↑ +${YELLOW_COL_EXTRAPTS[c]}`;
+    badge.textContent = `↓ +${YELLOW_COL_EXTRAPTS[c]}`;
     badge.title = 'Sarakkeen extrapisteet';
     cell.appendChild(badge);
   }
@@ -1784,11 +1784,11 @@ function updateYellowBonusBadges(){
 // Pieni label-apuri riveille
 function rowBonusLabel(code){
   switch(code){
-    case "ORANGE_5":   return "→ O5";
-    case "REROLL":     return "→ ↻";
-    case "GREEN_MARK": return "→ V✓";
-    case "PURPLE_6":   return "→ P6";
-    default:           return "→ Bonus";
+    case "ORANGE_5":   return "← O5";
+    case "REROLL":     return "← ↻";
+    case "GREEN_MARK": return "← V✓";
+    case "PURPLE_6":   return "← P6";
+    default:           return "← Bonus";
   }
 }
 
@@ -1796,16 +1796,16 @@ function rowBonusLabel(code){
 
 // Tekstikuvaukset
 function blueRowBonusLabel(idx){
-  if (idx===0) return "→ V✓";
-  if (idx===1) return "→ K?";
-  if (idx===2) return "→ O5";
-  return "→ Bonus";
+  if (idx===0) return "← V✓";
+  if (idx===1) return "← K?";
+  if (idx===2) return "← O5";
+  return "← Bonus";
 }
 function blueColBonusLabel(idx){
-  if (idx===0) return "↑ +1";
-  if (idx===1) return "↑ P6";
-  if (idx===2) return "↑ 🦊";
-  if (idx===3) return "↑ ↻";
+  if (idx===0) return "↓ +1";
+  if (idx===1) return "↓ P6";
+  if (idx===2) return "↓ 🦊";
+  if (idx===3) return "↓ ↻";
   return "↑ Bonus";
 }
 
