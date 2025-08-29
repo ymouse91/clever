@@ -1,0 +1,224 @@
+:root{
+  --bg:#0b0e14;
+  --fg:#eef2f7;
+  --muted:#a9b2c3;
+  --accent:#0d6efd;
+  --panel:#141925;
+  --border:#252c3a;
+  --yellow:#ffe08a;
+  --blue:#9bd0ff;
+  --green:#a8f0b1;
+  --orange:#ffc299;
+  --purple:#d3b5ff;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  color:var(--fg);
+  background:linear-gradient(180deg,#0b0e14,#111626 40%, #0b0e14 100%);
+
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.topbar{
+  position:sticky; top:0; z-index:10;
+  background:rgba(11,14,20,0.9);
+  backdrop-filter: blur(6px);
+  border-bottom:1px solid var(--border);
+  padding: .5rem env(safe-area-inset-right) .5rem env(safe-area-inset-left);
+  display:flex; align-items:center; gap:.75rem; flex-wrap:wrap;
+}
+.title{font-weight:700; letter-spacing:.2px}
+.hud{display:flex; gap:1rem; color:var(--muted); font-size:.95rem; flex:1}
+.actions{display:flex; gap:.5rem}
+
+.btn{
+  border:1px solid var(--border);
+  background:#151b2a;
+  color:var(--fg);
+  padding:.5rem .75rem;
+  border-radius:.6rem;
+  cursor:pointer;
+}
+.btn.primary{background:var(--accent); border-color:#0b5ed7}
+.btn:disabled{opacity:.5; cursor:not-allowed}
+
+main{padding:1rem max(1rem, env(safe-area-inset-left)); padding-right:max(1rem, env(safe-area-inset-right));}
+
+.dice-section{background:var(--panel); border:1px solid var(--border); border-radius:.8rem; padding:1rem; margin-bottom:1rem}
+.dice-row{display:flex; gap:.5rem; flex-wrap:wrap}
+
+.die{
+  width:54px; height:54px; border-radius:.6rem;
+  background:#1c2334; border:1px solid var(--border);
+  display:grid; place-items:center; font-weight:700; font-size:1.1rem;
+  user-select:none;
+}
+.die.white{background:#f5f7fb; color:#111; border-color:#cfd7e6}
+.die.yellow{background:var(--yellow); color:#111}
+.die.blue{background:var(--blue); color:#112}
+.die.green{background:var(--green); color:#112}
+.die.orange{background:var(--orange); color:#112}
+.die.purple{background:var(--purple); color:#112}
+.die.silver{opacity:.8; outline:2px dashed #9aa7c5}
+
+.dice-ctrls{display:flex; gap:.5rem; margin-top:.5rem; flex-wrap:wrap}
+.silver{margin-top:.75rem}
+
+.status{margin-top:.5rem; color:var(--muted)}
+
+.sheet{background:var(--panel); border:1px solid var(--border); border-radius:.8rem; padding:1rem}
+.sheet-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(280px,1fr));
+  gap:1rem;
+}
+.panel{
+  background: #777777;
+  border:1px solid var(--border);
+  border-radius:.8rem;
+  padding:.75rem;
+}
+.panel-title{font-weight:700; margin-bottom:.5rem}
+.panel-note{color:var(--muted); font-size:.9rem; margin-top:.35rem}
+
+.panel.yellow .grid{
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:.35rem;
+}
+.cell{
+  aspect-ratio:1/1;
+  border:1px solid var(--border);
+  border-radius:.4rem;
+  display:grid; place-items:center;
+  background:#0f1421;
+  font-weight:700;
+  font-size:1.05rem;
+  cursor:pointer;
+}
+.cell.marked{background:var(--yellow); color:#111}
+
+.panel.blue .track{
+  display:grid; grid-template-columns:repeat(11, minmax(32px,1fr)); gap:.35rem;
+}
+.box{
+  aspect-ratio:1/1;
+  border:1px solid var(--border);
+  border-radius:.4rem;
+  display:grid; place-items:center;
+  background:#0f1421;
+  cursor:pointer;
+  font-weight:700;
+}
+.box.marked{background:var(--blue); color:#112}
+
+.panel.green .row,
+.panel.orange .row,
+.panel.purple .row{
+  display:grid; grid-template-columns:repeat(10, minmax(36px,1fr)); gap:.35rem;
+}
+.slot{
+  aspect-ratio:1/1;
+  border:1px solid var(--border);
+  border-radius:.4rem;
+  display:grid; place-items:center;
+  background:#0f1421;
+  cursor:pointer;
+  position:relative;
+  font-weight:700;
+}
+.slot.marked{outline:2px solid var(--accent)}
+
+.slot .tiny{
+  position:absolute; bottom:4px; right:6px; font-size:.8rem; color:var(--muted)
+}
+.slot.x2::after{
+  content:"x2";
+  position:absolute; top:4px; left:6px; font-size:.8rem; color:var(--muted)
+}
+
+.sheet-footer{display:flex; align-items:center; gap:1rem; margin-top:1rem}
+#score-out{color:#fff; font-weight:700}
+
+dialog{
+  border:none; border-radius:.8rem; padding:1rem 1rem 0.5rem 1rem;
+  background:#0f1421; color:#fff;
+  max-width:560px;
+}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+dialog h3{margin:.25rem 0 .5rem 0}
+dialog .right{display:flex; justify-content:flex-end; margin-top:.5rem}
+.white-choices{display:flex; gap:.5rem; flex-wrap:wrap}
+
+/* Korostus valitulle nopalle */
+.die.selected {
+  outline: 3px solid #ffd54d;  /* kirkas keltainen kehys */
+  outline-offset: 2px;
+}
+/* +1-tila: hopealautasen nopat korostuvat klikattaviksi */
+#dice-silver .die.clickable {
+  outline: 2px dashed #0d6efd;
+  outline-offset: 2px;
+  cursor: pointer;
+}
+#dice-silver .die.clickable:hover {
+  outline-style: solid;
+}
+/* Noppapaneelit vierekkäin */
+.dice-lane{
+  display:grid;
+  grid-template-columns: 1fr 1fr; /* heitetyt | hopealautanen */
+  gap:1rem;
+  align-items:start;
+}
+
+/* Varaa tilaa, jotta näkymä ei siirry kun hopealautanen täyttyy */
+#dice-available, #dice-silver{
+  min-height: 72px;     /* 1 rivi noppia */
+}
+@media (min-width: 768px){
+  #dice-silver{
+    min-height: 120px;  /* varaa vähän enemmän tilaa hopealautaselle */
+  }
+}
+/* POISTA aiempi pelkkä outline, jos se on vielä voimassa */
+.panel.green .slot.marked,
+.panel.orange .slot.marked,
+.panel.purple .slot.marked {
+  outline: none;     /* yliajaa: .slot.marked { outline:2px ... } */
+}
+
+/* Täyttö väreillä + selkeä teksti */
+.panel.green .slot.marked {
+  background: var(--green);
+  color: #112;           /* tummempi teksti vaalealle taustalle */
+  border-color: #7bd68a; /* kevyt reuna (valinnainen) */
+}
+
+.panel.orange .slot.marked {
+  background: var(--orange);
+  color: #112;
+  border-color: #ffb07a;
+}
+
+.panel.purple .slot.marked {
+  background: var(--purple);
+  color: #112;
+  border-color: #c39aff;
+}
+
+/* Varmista, että numero näkyy myös "val"-spaneissa (oranssi/violetti) */
+.panel.orange .slot.marked .val,
+.panel.purple .slot.marked .val {
+  color: inherit;     /* käyttää yllä asetettua #112 */
+}
+
+/* x2-merkintä pysyy luettavana värillisellä taustalla */
+.panel.orange .slot.x2.marked::after {
+  color: rgba(0,0,0,.6);
+  font-weight: 600;
+}
+
