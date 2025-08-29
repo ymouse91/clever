@@ -364,3 +364,27 @@ dialog .right{display:flex; justify-content:flex-end; margin-top:.5rem}
   outline: 3px solid #fff !important;
   outline-offset: 2px;
 }
+/* ===================== PWA SAFE AREA FIX (iOS) ===================== */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-height: 100dvh;              /* moderni korjaus */
+  min-height: 100svh;
+  min-height: -webkit-fill-available; /* fallback vanhemmille iOS:lle */
+}
+
+body {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  background: linear-gradient(180deg,#0b0e14,#111626 40%,#0b0e14);
+}
