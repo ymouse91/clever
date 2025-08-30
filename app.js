@@ -1405,15 +1405,11 @@ function bonusMarkYellowRandom(){
 
   // Rivi-bonukset (ylhäältä alas 0..3):
   // 0 → oranssi 5
-  // 1 → ↻
+  // 1 → fox
   // 2 → vihreä rasti
   // 3 → violetti 6
-  const YELLOW_ROW_BONUS = [
-    "ORANGE_5",   // row 0
-    "REROLL",     // row 1
-    "GREEN_MARK", // row 2
-    "PURPLE_6"    // row 3
-  ];
+// jälkeen (esimerkki: rivi 1 antaa ketun)
+const YELLOW_ROW_BONUS = ["ORANGE_5","FOX","GREEN_MARK","PURPLE_6"];
 
   // Pystysarakkeiden extrapisteet (vasemmalta oikealle 0..3):
   // 0 → +10, 1 → +14, 2 → +16, 3 → +20
@@ -1468,7 +1464,7 @@ function bonusMarkYellowRandom(){
     state._yellowRowAwarded.add(r);
     const b = YELLOW_ROW_BONUS[r];
     if (b === "ORANGE_5")   safeCall("bonusMarkOrangeValue", 5);
-    if (b === "REROLL")     autoAddReroll();
+    if (b === "FOX")        autoAddFox();                   // ← REROLL → FOX
     if (b === "GREEN_MARK") safeCall("bonusMarkGreenNext");
     if (b === "PURPLE_6")   safeCall("bonusMarkPurpleValue", 6);
   }
@@ -1583,21 +1579,27 @@ function bonusMarkYellowRandom(){
     // Esimerkit (POISTA tai MUOKKAA):
     { idx: 2, bonus: "PLUS_ONE" },
     { idx: 4, bonus: "REROLL" },
+	{ idx: 5, bonus: { type:"FOX" } },
     { idx: 6, bonus: "YELLOW_RANDOM" },
+	{ idx: 8, bonus: { type:"PURPLE", value:6 } },
   ];
 
   window.ORANGE_MILESTONES = [
     // Esimerkit:
     { idx: 2, bonus: "PLUS_ONE" },
+    { idx: 4, bonus: "YELLOW_RANDOM" },
     { idx: 5, bonus: "REROLL" },
-    { idx: 8, bonus: { type:"PURPLE", value:6 } },
+    { idx: 7, bonus: { type:"PURPLE", value:6 } },
+	{ idx: 8, bonus: { type:"FOX" } },
   ];
 
   window.PURPLE_MILESTONES = [
     // Esimerkit:
     { idx: 2, bonus: "PLUS_ONE" },
+	{ idx: 3, bonus: "YELLOW_RANDOM" },
     { idx: 5, bonus: { type:"ORANGE", value:5 } },
-    { idx: 7, bonus: { type:"FOX" } },
+    { idx: 6, bonus: { type:"FOX" } },
+	{ idx: 8, bonus: "GREEN_MARK" },
   ];
 
   // ------------------------------------------------------------
@@ -1755,7 +1757,7 @@ if (typeof tryMarkGreen === "function" && !window.__greenBonusPatched){
   }
 })();
 // --- konfigit (pidä samat kuin aiemmin sovittiin) ---
-const YELLOW_ROW_BONUS = ["ORANGE_5","REROLL","GREEN_MARK","PURPLE_6"];
+const YELLOW_ROW_BONUS = ["ORANGE_5","FOX","GREEN_MARK","PURPLE_6"];
 const YELLOW_COL_EXTRAPTS = [10,14,16,20];
 
 // Tekstikuvaukset
@@ -1818,6 +1820,7 @@ function rowBonusLabel(code){
     case "REROLL":     return "← ↻";
     case "GREEN_MARK": return "← V✓";
     case "PURPLE_6":   return "← P6";
+	case "FOX":        return "← 🦊";
     default:           return "← Bonus";
   }
 }
