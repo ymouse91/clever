@@ -112,25 +112,7 @@ function resetDice(){
 
 // ---------- SHEET BUILD ----------
 function setupYellowGrid(){
-  // 4x4, satunnaiset arvot 1–6
-  const arr = [];
-  for (let i=0;i<16;i++) arr.push(1 + Math.floor(Math.random()*6));
-  state.sheet.yellow.grid = arr;
-  state.sheet.yellow.marked = new Set();
-
-  const wrap = qs("#yellow-grid");
-  wrap.innerHTML = "";
-  arr.forEach((n, idx) => {
-    const div = document.createElement("div");
-    div.className = "cell";
-    div.dataset.idx = idx;
-    div.textContent = n;
-    // ÄLÄ lisää elementtikohtaista listeneriä — käytämme delegointia .sheetissä
-    wrap.appendChild(div);
-  });
-
-  // --- UUTTA: Esitäytä yksi diagonaali ---
-  // Valitse yksi: "main" = päädiagonaali (0,5,10,15), "anti" = sivudiagonaali (3,6,9,12), "random" = arvo jompikumpi
+  // --- UUSI: valitse diagonaali ---
   const DIAGONAL_PREFILL = "main"; // "main" | "anti" | "random"
 
   let diag;
@@ -142,24 +124,63 @@ function setupYellowGrid(){
     diag = [0,5,10,15]; // default: päädiagonaali
   }
 
-  diag.forEach(idx => {
-    state.sheet.yellow.marked.add(idx);                   // data
-    const cell = wrap.querySelector(`.cell[data-idx="${idx}"]`);
-    if (cell) {
-      cell.classList.add("marked");                       // visuaalinen rasti
-      cell.setAttribute("aria-checked","true");
-      // jos haluat X:n näkyviin numeron lisäksi:
-      // cell.textContent = cell.textContent + " ✕";
+  // Ei-diagonaaliset indeksit
+  const allIdx = Array.from({length:16}, (_,i)=>i);
+  const nonDiag = allIdx.filter(i => !diag.includes(i));
+
+  // --- UUSI: Rakenna tasajakaumapooli 1–6, kukin 2 kpl (12 kpl yhteensä) ---
+  const pool = [];
+  for (let n = 1; n <= 6; n++) { pool.push(n, n); } // 12 kpl
+
+  // Sekoita pooli (Fisher–Yates)
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+
+  // --- Täytä grid: diagonaaleille placeholder (null) / X näkyviin, muille numerot poolista ---
+  const arr = Array(16).fill(null);
+  nonDiag.forEach((idx, k) => {
+    arr[idx] = pool[k]; // 1–6, kukin tasan 2 krt
+  });
+  // diag-indekseissä jätetään arr[idx] = null (ei numeroa; nämä ovat esitäytettyjä X-ruutuja)
+
+  // Tallenna stateen
+  state.sheet.yellow.grid = arr;
+  state.sheet.yellow.marked = new Set();
+
+  const wrap = qs("#yellow-grid");
+  wrap.innerHTML = "";
+
+  // Luo solut
+  allIdx.forEach((idx) => {
+    const div = document.createElement("div");
+    div.className = "cell";
+    div.dataset.idx = idx;
+
+    if (diag.includes(idx)) {
+      // --- Diagonaali: esitäytetty X ---
+      div.textContent = "X";
+      div.classList.add("marked");
+      div.setAttribute("aria-checked", "true");
+      state.sheet.yellow.marked.add(idx); // data: esitäytetty
+    } else {
+      // --- Muut ruudut: tasajakaumasta arvottu numero ---
+      div.textContent = String(arr[idx]); // 1–6
     }
 
-
+    // ÄLÄ lisää elementtikohtaista listeneriä — delegointi .sheetissä
+    wrap.appendChild(div);
   });
-  	// muista tallentaa, jotta pistelasku voi jättää sen huomiotta
-    state.sheet.yellow.prefilledDiag = diag.slice();
-   // --- UUTTA: piirrä bonusmerkit ja päivitä niiden tila ---
+
+  // Talleta diagonaali pistelaskua varten (jotta se voidaan jättää huomioimatta)
+  state.sheet.yellow.prefilledDiag = diag.slice();
+
+  // Piirrä/päivitä mahdolliset bonusmerkit
   renderYellowBonusBadges();
   updateYellowBonusBadges();
 }
+
 
 
 function setupBlueTrack(){
