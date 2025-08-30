@@ -787,8 +787,16 @@ function renderSheetVisuals(){
 
 // ---------- UI BIND ----------
 function bindUI(){
-  qs("#btn-new").addEventListener("click", ()=>{
-    if (confirm("Aloitetaanko uusi peli? Nykyinen menetetään.")) newGame();
+   qs("#btn-new").addEventListener("click", ()=>{
+    if (state.round >= ROUNDS_TOTAL) {
+      // Kierrokset jo täynnä → aloita suoraan uusi peli
+      newGame();
+    } else {
+      // Muulloin kysytään varmistus
+      if (confirm("Aloitetaanko uusi peli? Nykyinen menetetään.")) {
+        newGame();
+      }
+    }
   });
   qs("#btn-help").addEventListener("click", ()=> qs("#help").showModal());
   qs("#btn-roll").addEventListener("click", rollRemaining);
