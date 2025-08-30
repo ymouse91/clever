@@ -364,6 +364,12 @@ dialog .right{display:flex; justify-content:flex-end; margin-top:.5rem}
   outline: 3px solid #fff !important;
   outline-offset: 2px;
 }
+#dice-silver .die.disabled {
+  opacity: 0.5;
+  outline: none !important; /* poistaa katkoviivan */
+  pointer-events: none; /* varmuuden vuoksi */
+}
+
 /* ===================== PWA SAFE AREA FIX (iOS) ===================== */
 :root {
   --safe-top: env(safe-area-inset-top, 0px);

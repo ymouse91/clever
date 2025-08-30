@@ -730,6 +730,7 @@ function renderDice(){
 
     if (d.inSilver) {
       if (state.plusOneArmed) div.classList.add("clickable");
+	  if (!d.alive) div.classList.add("disabled");             // ← UUSI: harmaa ulkoasu
       silv.appendChild(div);
       if (!state.silver.includes(d)) state.silver.push(d);
     } else if (d.alive) {
@@ -805,7 +806,7 @@ qs("#dice-silver").addEventListener("click", (ev) => {
     dieEl.className.split(" ").find(c => DICE_COLORS.includes(c));
   const die = state.dice.find(d => d.color === color && d.inSilver);
   if (!die || die.value == null){ setStatus("Tässä nopassa ei ole arvoa."); return; }
-
+  if (!die.alive){ setStatus("Tämä hopealautasen noppa on jo käytetty."); return; }  // ← UUSI
   // --- PERUUTUS: sama hopeanoppa uudelleen -> +1 takaisin, valinta pois ---
   if (dieEl.classList.contains("armed")) {
     dieEl.classList.remove("armed");
