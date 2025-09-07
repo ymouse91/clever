@@ -394,3 +394,37 @@ body {
   padding-right: var(--safe-right);
   background: linear-gradient(180deg,#0b0e14,#111626 40%,#0b0e14);
 }
+
+/* ============ Phone-only layout: pinota paneelit allekkain ============ */
+/* Rajaus ~iPhone leveydelle; iPad (≥768px) ei muutu */
+@media (max-width: 600px) {
+  /* Korvaa 2-palstainen grid pystysuuntaisella pinolla */
+  .sheet-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--row-gap-left);
+  }
+
+  /* Poista stack-konttien oma asettelu, käytä vain paneeleita peräkkäin */
+  .left-stack,
+  .right-stack {
+    display: contents;  /* säilyttää lasten DOM-järjestyksen: Y, B, G, O, P */
+  }
+
+  /* Varmista mukava väli paneelien väliin */
+  .panel { margin-bottom: var(--row-gap-left); }
+  .panel:last-child { margin-bottom: 0; }
+
+  /* (Valinnainen) jos haluat myös nopat päällekkäin iPhonessa:
+  .dice-lane { grid-template-columns: 1fr; }
+  */
+}
+/* ================== Phone-only: jaa 10 slotin rivit kahteen 5+5 ================== */
+@media (max-width: 600px) {
+  .panel.green .row,
+  .panel.orange .row,
+  .panel.purple .row {
+    grid-template-columns: repeat(5, minmax(var(--cell), 1fr));
+    grid-auto-rows: auto;   /* luo toisen rivin automaattisesti */
+  }
+}

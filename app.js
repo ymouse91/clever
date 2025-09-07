@@ -1577,20 +1577,20 @@ const YELLOW_ROW_BONUS = ["ORANGE_5","FOX","GREEN_MARK","PURPLE_6"];
   // HUOM: Täytä nämä oman radan pituuden mukaan.
   window.GREEN_MILESTONES = [
     // Esimerkit (POISTA tai MUOKKAA):
-    { idx: 2, bonus: "PLUS_ONE" },
-    { idx: 4, bonus: "REROLL" },
+    { idx: 1, bonus: "PLUS_ONE" },
+    { idx: 3, bonus: "REROLL" },
 	{ idx: 5, bonus: { type:"FOX" } },
-    { idx: 6, bonus: "YELLOW_RANDOM" },
-	{ idx: 8, bonus: { type:"PURPLE", value:6 } },
+    { idx: 7, bonus: "YELLOW_RANDOM" },
+	{ idx: 9, bonus: { type:"PURPLE", value:6 } },
   ];
 
   window.ORANGE_MILESTONES = [
     // Esimerkit:
-    { idx: 2, bonus: "PLUS_ONE" },
-    { idx: 4, bonus: "YELLOW_RANDOM" },
-    { idx: 5, bonus: "REROLL" },
-    { idx: 7, bonus: { type:"PURPLE", value:6 } },
-	{ idx: 8, bonus: { type:"FOX" } },
+	{ idx: 2, bonus: "REROLL" },
+	{ idx: 4, bonus: { type:"FOX" } },
+    { idx: 6, bonus: { type:"PURPLE", value:6 } },
+	{ idx: 8, bonus: "PLUS_ONE" },
+
   ];
 
   window.PURPLE_MILESTONES = [
